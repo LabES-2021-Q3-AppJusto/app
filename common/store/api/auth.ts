@@ -49,6 +49,11 @@ export default class AuthApi {
     return userCredential.user;
   }
 
+  async signInWithEmailAndPassword(email: string, password: string) {
+    const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
+    return userCredential.user;
+  }
+
   getUserId() {
     return this.auth.currentUser?.uid;
   }

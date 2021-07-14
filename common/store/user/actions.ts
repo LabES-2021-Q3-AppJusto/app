@@ -55,6 +55,10 @@ export const signInWithEmailLink = (api: Api) => (email: string, link: string) =
   return api.auth().signInWithEmailLink(email, link);
 };
 
+export const signInWithEmailAndPassword =
+  (api: Api) => (email: string, password: string) => async (dispatch: AppDispatch) =>
+    dispatch(awaitWithFeedback(api.auth().signInWithEmailAndPassword(email, password)));
+
 export const deleteAccount =
   (api: Api) => (payload: Partial<DeleteAccountPayload>) => async (dispatch: AppDispatch) => {
     await dispatch(awaitWithFeedback(api.deleteAccount(payload)));

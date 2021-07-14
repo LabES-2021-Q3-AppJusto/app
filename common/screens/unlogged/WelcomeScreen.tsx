@@ -1,10 +1,11 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useCallback, useContext, useState } from 'react';
+import React from 'react';
 import {
   Dimensions,
   Keyboard,
   Platform,
+  Pressable,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -27,7 +28,7 @@ import { track, useSegmentScreen } from '../../store/api/track';
 import { getExtra, getFlavor } from '../../store/config/selectors';
 import { showToast } from '../../store/ui/actions';
 import { getUIBusy } from '../../store/ui/selectors';
-import { signInWithEmail } from '../../store/user/actions';
+import { signInWithEmail, signInWithEmailAndPassword } from '../../store/user/actions';
 import { colors, halfPadding, padding, screens, texts } from '../../styles';
 import { validateEmail } from '../../utils/validators';
 import { UnloggedParamList } from './types';
@@ -42,7 +43,7 @@ type Props = {
 
 export default function ({ navigation, route }: Props) {
   // context
-  const api = useContext(ApiContext);
+  const api = React.useContext(ApiContext);
   const dispatch = useDispatch<AppDispatch>();
   // const tallerDevice = useTallerDevice();
   const { height } = Dimensions.get('window');
@@ -52,13 +53,15 @@ export default function ({ navigation, route }: Props) {
   const flavor = useSelector(getFlavor);
   const extra = useSelector(getExtra);
   // state
-  const [email, setEmail] = useState('');
-  const [acceptedTerms, setAcceptTerms] = useState(false);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [isPasswordShown, setPasswordShown] = React.useState(false);
+  const [acceptedTerms, setAcceptTerms] = React.useState(false);
   // side effects
   useSegmentScreen('Welcome');
 
   // handlers
-  const signInHandler = useCallback(async () => {
+  const signInHandler = React.useCallback(async () => {
     Keyboard.dismiss();
     if (!acceptedTerms) {
       dispatch(showToast(t('Você precisa aceitar os termos para criar sua conta.'), 'error'));
@@ -70,13 +73,18 @@ export default function ({ navigation, route }: Props) {
     }
     track('Signing in', { email });
     try {
-      await dispatch(signInWithEmail(api)(email.trim(), extra.environment));
+      if (!isPasswordShown) {
+        await dispatch(signInWithEmail(api)(email.trim(), extra.environment));
+        navigation.navigate('SignInFeedback', { email });
+      } else {
+        await dispatch(signInWithEmailAndPassword(api)(email.trim(), password.trim()));
+      }
     } catch (error) {
+      console.log(error);
       dispatch(
         showToast(t('Não foi possível registrar. Verifique seu e-mail e tente novamente.'), 'error')
       );
     }
-    navigation.navigate('SignInFeedback', { email });
   }, [acceptedTerms, api, dispatch, email, extra.environment, navigation]);
 
   const welcomeMessage =
@@ -96,33 +104,38 @@ export default function ({ navigation, route }: Props) {
       >
         <View style={{ flex: 1, paddingHorizontal: padding }}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <>
-              <ShowIf test={tallerDevice && flavor === 'consumer'}>
-                {() => (
-                  <View style={{ left: -12 }}>
-                    <IconIllustrationIntro />
-                  </View>
-                )}
-              </ShowIf>
-              <ShowIf test={tallerDevice && flavor === 'courier'}>
-                {() => (
-                  <View style={{ left: -12 }}>
-                    <IconMotoCycleBig />
-                  </View>
-                )}
-              </ShowIf>
-              <View style={{ marginTop: 32 }}>
-                <IconLogoGreen />
-              </View>
-              <View style={{ marginTop: padding }}>
-                <Text style={[texts.x2l]}>{welcomeMessage}</Text>
-                <Text
-                  style={[texts.sm, { color: colors.grey700, lineHeight: 21, marginTop: padding }]}
-                >
-                  {t('Digite seu e-mail para entrar ou criar sua conta.')}
-                </Text>
-              </View>
-            </>
+            <Pressable delayLongPress={2000} onLongPress={() => setPasswordShown(!isPasswordShown)}>
+              <>
+                <ShowIf test={tallerDevice && flavor === 'consumer'}>
+                  {() => (
+                    <View style={{ left: -12 }}>
+                      <IconIllustrationIntro />
+                    </View>
+                  )}
+                </ShowIf>
+                <ShowIf test={tallerDevice && flavor === 'courier'}>
+                  {() => (
+                    <View style={{ left: -12 }}>
+                      <IconMotoCycleBig />
+                    </View>
+                  )}
+                </ShowIf>
+                <View style={{ marginTop: 32 }}>
+                  <IconLogoGreen />
+                </View>
+                <View style={{ marginTop: padding }}>
+                  <Text style={[texts.x2l]}>{welcomeMessage}</Text>
+                  <Text
+                    style={[
+                      texts.sm,
+                      { color: colors.grey700, lineHeight: 21, marginTop: padding },
+                    ]}
+                  >
+                    {t('Digite seu e-mail para entrar ou criar sua conta.')}
+                  </Text>
+                </View>
+              </>
+            </Pressable>
           </TouchableWithoutFeedback>
 
           <View style={{ marginTop: padding }}>
@@ -135,6 +148,18 @@ export default function ({ navigation, route }: Props) {
               blurOnSubmit
               autoCapitalize="none"
             />
+            {isPasswordShown ? (
+              <DefaultInput
+                style={{ marginTop: padding }}
+                value={password}
+                title={t('Senha')}
+                placeholder={t('Digite sua senha')}
+                onChangeText={setPassword}
+                keyboardType="visible-password"
+                blurOnSubmit
+                autoCapitalize="none"
+              />
+            ) : null}
           </View>
           <View
             style={{
