@@ -150,7 +150,7 @@ export default function ({ navigation, route }: Props) {
           onChatWithCourier={openChatWithCourier}
           onOpenChat={(from) => openChat(from.id, from.agent)}
         />
-        {order.dispatchingState !== 'going-destination' ? (
+        {order.dispatchingState !== 'arrived-destination' ? (
           <DeliveryConfirmation
             switchValue={wantsCode}
             onChangeCodeDelivery={() => setWantsCode(!wantsCode)} // we will need to update the order with the code option
