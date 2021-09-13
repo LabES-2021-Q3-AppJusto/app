@@ -28,58 +28,41 @@ export const DeliveryConfirmation = ({
   return (
     <View style={{ backgroundColor: colors.white, paddingTop: halfPadding, flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <SingleHeader title={t('Confirmação da entrega')} />
-        {/* <View style={{ paddingHorizontal: padding, paddingTop: halfPadding }}>
-          <HorizontalSelect data={data} selected={selected} onSelect={onSelect} />
-        </View> */}
-
-        <View style={{ paddingTop: halfPadding, paddingHorizontal: padding }}>
-          <Text style={{ ...texts.xs, color: colors.grey700 }}>
-            {t('O entregador pedirá os 3 primeiros dígitos do seu CPF para confirmar a entrega.')}
-          </Text>
-          {/* <Text style={{ ...texts.xs, color: colors.grey700 }}>
-            {t(
-              'O entregador pedirá os 3 primeiros dígitos do seu CPF para confirmar a entrega. Se preferir, você pode desativar a necessidade do código de confirmação.'
-            )}
-          </Text> */}
-        </View>
+        <SingleHeader title={t('Código de confirmação da entrega')} />
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             paddingHorizontal: padding,
             flex: 1,
-            height: 64,
           }}
         >
-          <View
+          <Text style={{ ...texts.x4l }}>{confirmation?.handshakeChallenge}</Text>
+        </View>
+        <PaddedView>
+          <Text style={{ ...texts.xs, color: colors.grey700 }}>
+            {t(
+              'Na entrega, informe os 4 primeiros dígitos do seu celular. Se preferir, você pode desativar o código'
+            )}
+          </Text>
+          <PaddedView
+            half
             style={{
+              marginTop: padding,
+              backgroundColor: colors.grey50,
+              flexDirection: 'row',
+              alignItems: 'center',
               ...borders.default,
-              backgroundColor: colors.white,
-              borderColor: colors.black,
-              borderWidth: 2,
-              borderRadius: 32,
+              borderColor: colors.grey50,
             }}
           >
-            {/* <Switch
-              trackColor={{ false: colors.white, true: colors.white }}
-              value={switchValue}
-              thumbColor={switchValue ? colors.green500 : colors.yellow}
-              ios_backgroundColor={colors.white}
-              onValueChange={onChangeCodeDelivery}
-            /> */}
-          </View>
-          <Text style={{ ...texts.sm, marginLeft: halfPadding }}>
-            {t('Código de confirmação: ')}
-          </Text>
-          {/* <View style={{ flex: 1 }} /> */}
-          {/* {confirmation?.handshakeChallenge && switchValue ? (
-            <Text style={{ ...texts.x4l }}>{confirmation.handshakeChallenge}</Text>
-          ) : null} */}
-          <Text style={{ ...texts.x4l, marginLeft: halfPadding }}>
-            {confirmation?.handshakeChallenge}
-          </Text>
-        </View>
+            <Text style={{ ...texts.sm }}>
+              {t(
+                'Se você está pedindo para outra pessoa, compartilhe o código direto por mensagem'
+              )}
+            </Text>
+          </PaddedView>
+        </PaddedView>
         <PaddedView style={{ backgroundColor: colors.grey50, flex: 1 }}>
           <View style={{ flexDirection: 'row' }}>
             <IconFastFood />
