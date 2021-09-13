@@ -150,11 +150,14 @@ export default function ({ navigation, route }: Props) {
           onChatWithCourier={openChatWithCourier}
           onOpenChat={(from) => openChat(from.id, from.agent)}
         />
-        <DeliveryConfirmation
-          switchValue={wantsCode}
-          onChangeCodeDelivery={() => setWantsCode(!wantsCode)} // we will need to update the order with the code option
-          confirmation={confirmation}
-        />
+        {order.dispatchingState !== 'going-destination' ? (
+          <DeliveryConfirmation
+            switchValue={wantsCode}
+            onChangeCodeDelivery={() => setWantsCode(!wantsCode)} // we will need to update the order with the code option
+            confirmation={confirmation}
+            onShareCode={() => null} // share code number... what will be the message?
+          />
+        ) : null}
         <FoodOrderItemsInfo order={order} />
         <HR height={padding} />
         <View style={{ paddingTop: halfPadding }}>

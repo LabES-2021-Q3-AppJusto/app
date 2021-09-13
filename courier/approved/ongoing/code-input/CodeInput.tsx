@@ -9,11 +9,12 @@ interface Props {
 
 export const CodeInput = ({ value, onChange }: Props) => {
   // state
-  const values = [value.charAt(0), value.charAt(1), value.charAt(2)];
+  const values = [value.charAt(0), value.charAt(1), value.charAt(2), value.charAt(3)];
   // refs
   const firstInputRef = React.useRef<TextInput>(null);
   const secondInputRef = React.useRef<TextInput>(null);
   const thirdInputRef = React.useRef<TextInput>(null);
+  const fourthInputRef = React.useRef<TextInput>(null);
   // UI handlers
   const updateValues = (
     char: string,
@@ -66,6 +67,15 @@ export const CodeInput = ({ value, onChange }: Props) => {
         value={values[2]}
         returnKeyType="done"
         onChangeText={(char) => updateValues(char, 2, undefined, secondInputRef)}
+        onSubmitEditing={() => fourthInputRef.current?.focus()}
+        importantForAutofill="no"
+      />
+      <View style={{ flex: 0.1 }} />
+      <DigitInput
+        ref={fourthInputRef}
+        value={values[3]}
+        returnKeyType="done"
+        onChangeText={(char) => updateValues(char, 3, undefined, thirdInputRef)}
         importantForAutofill="no"
       />
     </View>
