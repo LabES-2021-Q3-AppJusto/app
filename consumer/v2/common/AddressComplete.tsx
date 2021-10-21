@@ -12,7 +12,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { ApiContext } from '../../../common/app/context';
@@ -73,9 +73,9 @@ export const AddressComplete = ({ navigation, route }: Props) => {
     sections =
       returnScreen !== 'RecommendRestaurant'
         ? [
-            ...sections,
-            { title: t('Últimos endereços utilizados'), data: addresses, key: 'last-used-address' },
-          ]
+          ...sections,
+          { title: t('Últimos endereços utilizados'), data: addresses, key: 'last-used-address' },
+        ]
         : [...sections];
     return sections;
   }, [autocompletePredictions, consumer?.favoritePlaces, returnScreen]);
@@ -119,6 +119,12 @@ export const AddressComplete = ({ navigation, route }: Props) => {
       setSearchText(formatAddress(selectedAddress));
     }
   }, [selectedAddress]);
+
+  React.useEffect(() => {
+    navigation.setOptions({
+      title: returnScreen !== 'RecommendRestaurant' ? 'Confirmar endereço' : 'Indicar restaurante'
+    })
+  }, [navigation, returnScreen])
 
   // handlers
   // fires whenever use change the input text
