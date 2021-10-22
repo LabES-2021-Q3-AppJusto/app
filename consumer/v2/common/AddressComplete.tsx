@@ -139,7 +139,11 @@ export const AddressComplete = ({ navigation, route }: Props) => {
   // when user select item from list
   const selectItemHandler = React.useCallback(
     (item: Address) => {
-      Keyboard.dismiss();
+      //Address complete with/without number logic
+      if (returnScreen !== 'RecommendRestaurant') {
+        if (item.main?.includes(',')) Keyboard.dismiss();
+        else item.main = item.main + ', ';
+      } else Keyboard.dismiss();
       setAutoCompletePredictions([]); // clearing predictions hides the modal
       setSelectedAddress(item);
       const favoritePlace = consumer?.favoritePlaces?.find(
