@@ -141,8 +141,18 @@ export const AddressComplete = ({ navigation, route }: Props) => {
     (item: Address) => {
       //Address complete with/without number logic
       if (returnScreen !== 'RecommendRestaurant') {
-        if (item.main?.includes(',')) Keyboard.dismiss();
-        else item.main = item.main + ', ';
+        const re = /^[0-9]{5}-[0-9]{3}$/
+        if (re.test(item.main == undefined ? '' : item?.main)) {
+          const message = item.secondary?.split(" - ")
+          const first = message?.shift()
+          const second = message?.join(" - ")
+          item.main = first + ', ';
+          item.secondary = second;
+        }
+        else {
+          if (item.main?.includes(',')) Keyboard.dismiss();
+          else item.main = item.main + ', ';
+        }
       } else Keyboard.dismiss();
       setAutoCompletePredictions([]); // clearing predictions hides the modal
       setSelectedAddress(item);
@@ -179,7 +189,7 @@ export const AddressComplete = ({ navigation, route }: Props) => {
         }
         placeholder={
           returnScreen !== 'RecommendRestaurant'
-            ? t('Ex: Av. Paulista 1578')
+            ? t('Ex: Av. Paulista, 1578')
             : t('Qual restaurante você quer indicar?')
         }
         onChangeText={textChangeHandler}
