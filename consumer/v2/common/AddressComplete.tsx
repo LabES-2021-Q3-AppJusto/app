@@ -139,10 +139,12 @@ export const AddressComplete = ({ navigation, route }: Props) => {
   // when user select item from list
   const selectItemHandler = React.useCallback(
     (item: Address) => {
-      //Address complete with/without number logic
+      //when user on select address screen
       if (returnScreen !== 'RecommendRestaurant') {
-        const re = /^[0-9]{5}-[0-9]{3}$/
-        if (re.test(item.main == undefined ? '' : item?.main)) {
+        //contains postal code regex
+        const containsPostalCode = /^[0-9]{5}-[0-9]{3}$/
+        //if user enters postal code, retrieves the address information
+        if (containsPostalCode.test(item.main == undefined ? '' : item?.main)) {
           const message = item.secondary?.split(" - ")
           const first = message?.shift()
           const second = message?.join(" - ")
@@ -150,7 +152,10 @@ export const AddressComplete = ({ navigation, route }: Props) => {
           item.secondary = second;
         }
         else {
-          if (item.main?.includes(',')) Keyboard.dismiss();
+          //contains a number regex
+          const containsNumber = /^.*[0-9]+.*$/;
+          //verifies if selected address has number
+          if (containsNumber.test(item.main == undefined ? '' : item?.main)) Keyboard.dismiss();
           else item.main = item.main + ', ';
         }
       } else Keyboard.dismiss();
