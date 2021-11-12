@@ -9,7 +9,7 @@ import { UnloggedParamList } from '../../../../common/screens/unlogged/types';
 import { useSearch } from '../../../../common/store/api/search/useSearch';
 import {
   updateCurrentLocation,
-  updateCurrentPlace,
+  updateCurrentPlace
 } from '../../../../common/store/consumer/actions';
 import { getConsumer, getCurrentLocation } from '../../../../common/store/consumer/selectors';
 import { SearchFilter } from '../../../../common/store/consumer/types';
@@ -47,56 +47,100 @@ export const FoodOrderHome = ({ route, navigation }: Props) => {
     isLoading,
     refetch,
   } = useSearch<BusinessAlgolia>(true, 'restaurant', 'distance', filters, currentLocation, '');
-  const [refreshing, setRefreshing] = React.useState(false);
-  // side effects
-  React.useEffect(() => {
-    if (place) {
-      dispatch(updateCurrentLocation(undefined));
-      dispatch(updateCurrentPlace(place));
-    }
-  }, [dispatch, place]);
-  // handlers
-  const refresh = async () => {
-    setRefreshing(true);
-    await api.search().clearCache();
-    await refetch();
-    setRefreshing(false);
-  };
-  // UI
-  return (
-    <RestaurantList
-      sections={sectionsFromResults(restaurants)}
-      ListHeaderComponent={
-        <View style={{ backgroundColor: colors.white, paddingBottom: padding }}>
-          <FoodOrderHomeHeader
-            selectedCuisineId={filters.find(() => true)?.value}
-            onLocationPress={() => {
-              navigation.navigate('AddressComplete', {
-                returnParam: 'place',
-                returnScreen: 'FoodOrderHome',
-              });
-            }}
-            onSearchPress={() => {
-              navigation.navigate('RestaurantSearch');
-            }}
-            onCuisineSelect={(cuisine) => {
-              setFilters(cuisine ? [{ type: 'cuisine', value: cuisine.name }] : []);
-            }}
-            consumer={consumer}
-            onLogin={() => navigation.replace('WelcomeScreen')}
-          />
-        </View>
+  //test restaurants
+  if (restaurants) {
+
+    var restaurantsTest: BusinessAlgolia[] = [restaurants[0], restaurants[0], restaurants[0], restaurants[0], restaurants[0], restaurants[0]];
+    restaurantsTest = restaurantsTest.map((restaurant, index) => {
+      restaurant.name = "Restaurante " + index;
+      restaurant.businessAddress.latlng = {
+        latitude: ((currentLocation?.latitude ?? 0) + index), longitude: ((currentLocation?.longitude ?? 0) + index)
       }
-      onSelect={(restaurantId) => {
-        navigation.push('RestaurantNavigator', {
-          restaurantId,
-          screen: 'RestaurantDetail',
-        });
-      }}
-      loading={isLoading}
-      refreshing={refreshing}
-      onRefresh={() => refresh()}
-      onRecommend={() => navigation.navigate('RecommendRestaurant')}
-    />
-  );
-};
+      return restaurant;
+    });
+    // const restaurantsTest: BusinessAlgolia[] = [
+    //   {
+    //     objectID: "1",
+    //     _geoloc: { lat: 0, lng: 0 },
+    //     enabled: true,
+    //     name: "Restaurante A",
+    //     code: "Code A",
+    //     managerEmail: "email",
+    //     situation: "",
+    //     onboarding: "",
+    //     description: "",
+    //     status: "open",
+    //     businessAddress: {
+    //       cep: "",
+    //       address: "",
+    //       number: "",
+    //       additional: "",
+    //       city: "",
+    //       state: "",
+    //       latlng: {
+    //         latitude: currentLocation?.latitude ?? 0, longitude: currentLocation?.longitude ?? 0
+    //       }
+    //     },
+    //     cuisine: "",
+    //     deliveryRange: 20,
+    //     statistics: {
+    //       totalOrders: 0,
+    //       averagePreparationTime: 0,
+    //       averageTicketPrice: 0,
+    //       averageWaitingTime: 0
+    //     },
+    //     createdOn: restaurants[0].createdOn
+    //   }];
+    const [refreshing, setRefreshing] = React.useState(false);
+    // side effects
+    React.useEffect(() => {
+      if (place) {
+        dispatch(updateCurrentLocation(undefined));
+        dispatch(updateCurrentPlace(place));
+      }
+    }, [dispatch, place]);
+    // handlers
+    const refresh = async () => {
+      setRefreshing(true);
+      await api.search().clearCache();
+      await refetch();
+      setRefreshing(false);
+    };
+    // UI
+    return (
+      <RestaurantList
+        sections={sectionsFromResults(restaurants, currentLocation)}
+        ListHeaderComponent={
+          <View style={{ backgroundColor: colors.white, paddingBottom: padding }}>
+            <FoodOrderHomeHeader
+              selectedCuisineId={filters.find(() => true)?.value}
+              onLocationPress={() => {
+                navigation.navigate('AddressComplete', {
+                  returnParam: 'place',
+                  returnScreen: 'FoodOrderHome',
+                });
+              }}
+              onSearchPress={() => {
+                navigation.navigate('RestaurantSearch');
+              }}
+              onCuisineSelect={(cuisine) => {
+                setFilters(cuisine ? [{ type: 'cuisine', value: cuisine.name }] : []);
+              }}
+              consumer={consumer}
+              onLogin={() => navigation.replace('WelcomeScreen')}
+            />
+          </View>
+        }
+        onSelect={(restaurantId) => {
+          navigation.push('RestaurantNavigator', {
+            restaurantId,
+            screen: 'RestaurantDetail',
+          });
+        }}
+        loading={isLoading}
+        refreshing={refreshing}
+        onRefresh={() => refresh()}
+        onRecommend={() => navigation.navigate('RecommendRestaurant')}
+      />
+    );
+  };
