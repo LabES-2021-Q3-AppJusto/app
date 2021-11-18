@@ -169,6 +169,7 @@ export default function ({ navigation, route }: Props) {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1, padding }}>
           <PatternInput
+            testID="credit-card-number-test"
             title={t('Número do cartão')}
             value={number}
             placeholder={t('0000 0000 0000 0000')}
@@ -181,7 +182,7 @@ export default function ({ navigation, route }: Props) {
             returnKeyType="next"
             blurOnSubmit={false}
             onChangeText={onChangeNumber}
-            trailing={image && <Image source={image} />}
+            trailing={image && <Image testID="credit-card-icon-test" source={image} />}
             errorMessage={numberError}
             onSubmitEditing={() => expirationMonthRef.current?.focus()}
           />
