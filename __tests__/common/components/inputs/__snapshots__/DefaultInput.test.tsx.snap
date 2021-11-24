@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should display error message 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "paddingVertical": 8,
+        },
+        Object {
+          "paddingHorizontal": 8,
+        },
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "backgroundColor": "white",
+            "borderColor": "#DC3545",
+            "borderRadius": 8,
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "color": "#4EA031",
+            "fontFamily": "BarlowMedium",
+            "fontSize": 13,
+            "width": "100%",
+          }
+        }
+        testID="default-input-title"
+      >
+        Example
+      </Text>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <TextInput
+            allowFontScaling={true}
+            editable={true}
+            onChangeText={[Function]}
+            rejectResponderTermination={true}
+            style={
+              Object {
+                "color": "#697667",
+                "fontFamily": "BarlowMedium",
+                "fontSize": 16,
+                "width": "100%",
+              }
+            }
+            testID="default-input-input"
+            underlineColorAndroid="transparent"
+            value="error"
+          />
+        </View>
+        <Text>
+          bla
+        </Text>
+      </View>
+    </View>
+  </View>
+  <Text
+    style={
+      Object {
+        "color": "#DC3545",
+        "fontFamily": "BarlowMedium",
+        "fontSize": 13,
+      }
+    }
+    testID="default-input-error-message"
+  >
+    Input error
+  </Text>
+</View>
+`;
+
+exports[`Should render input properly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "paddingVertical": 8,
+        },
+        Object {
+          "paddingHorizontal": 8,
+        },
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "backgroundColor": "white",
+            "borderColor": "#C8D7CB",
+            "borderRadius": 8,
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "color": "#4EA031",
+            "fontFamily": "BarlowMedium",
+            "fontSize": 13,
+            "width": "100%",
+          }
+        }
+        testID="default-input-title"
+      >
+        Example
+      </Text>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <TextInput
+            allowFontScaling={true}
+            editable={true}
+            onChangeText={[Function]}
+            rejectResponderTermination={true}
+            style={
+              Object {
+                "color": "#697667",
+                "fontFamily": "BarlowMedium",
+                "fontSize": 16,
+                "width": "100%",
+              }
+            }
+            testID="default-input-input"
+            underlineColorAndroid="transparent"
+            value="example"
+          />
+        </View>
+        <Text>
+          bla
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

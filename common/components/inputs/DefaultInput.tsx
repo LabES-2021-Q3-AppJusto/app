@@ -55,6 +55,7 @@ export default React.forwardRef(
                     color: colors.green600,
                     width: '100%',
                   }}
+                  testID="default-input-title"
                 >
                   {title}
                 </Text>
@@ -70,6 +71,7 @@ export default React.forwardRef(
                     width: '100%',
                   }}
                   editable={editable}
+                  testID="default-input-input"
                   {...props}
                 />
               </View>
@@ -78,7 +80,11 @@ export default React.forwardRef(
           </View>
           {children}
         </PaddedView>
-        {!!errorMessage && <Text style={{ ...texts.xs, color: colors.red }}>{errorMessage}</Text>}
+        {!!errorMessage && (
+          <Text testID="default-input-error-message" style={{ ...texts.xs, color: colors.red }}>
+            {errorMessage}
+          </Text>
+        )}
       </View>
     );
   }
